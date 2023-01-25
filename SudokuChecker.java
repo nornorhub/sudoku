@@ -8,22 +8,8 @@ public class SudokuChecker
     {
         int[][] sud;
         sud = getPuzzle("puzzle1.txt");
-        for (int[] row: sud) {
-            for (int i: row) {
-                System.out.print(i);
-            }
-            System.out.println("");
-        }
-        System.out.println("");
         System.out.println(check(sud));
         sud = getPuzzle("puzzle2.txt");
-        for (int[] row: sud) {
-            for (int i: row) {
-                System.out.print(i);
-            }
-            System.out.println("");
-        }
-        System.out.println("");
         System.out.println(check(sud));
         sud = getPuzzle("puzzle3.txt");
         System.out.println(check(sud));   
@@ -71,16 +57,12 @@ public class SudokuChecker
         for (int i = 0; i < sudoku[0].length; i++) {
             checked = new int[9];
             for (int[] row: sudoku) {
-                System.out.print(row[i]);
-                System.out.println("");
                 if (row[i] >= 1 && row[i] <= 9) {
                     for (int j = 0; j < checked.length; j++) {
-                        System.out.print(checked[j]);
                         if (row[i] == checked[j]) {
                             return false;
                         }
                     }
-                    System.out.println("");
                     for (int k = 0; k < checked.length; k++) {
                         if (checked[k] == 0) {
                             checked[k] = row[i];
@@ -90,7 +72,67 @@ public class SudokuChecker
                 }
             }
         }
-        System.out.println("");
+        for (int i = 0; i < 9; i++) {
+            if (i < 3) {
+                checked = new int[9];
+                for (int j = 0; j < 3; j++) {
+                    for (int k = 3*i; k < (3*i)+3; k++) {
+                        if (sudoku[j][k] >= 1 && sudoku[j][k] <= 9) {
+                            for (int a = 0; a < checked.length; a++) {
+                                if (sudoku[j][k] == checked[a]) {
+                                    return false;
+                                }
+                            }
+                            for (int b = 0; b < checked.length; b++) {
+                                if (checked[b] == 0) {
+                                    checked[b] = sudoku[j][k];
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            } else if (i < 6) {
+                checked = new int[9];
+                for (int j = 3; j < 6; j++) {
+                    for (int k = 3*(i-3); k < (3*(i-3))+3; k++) {
+                        if (sudoku[j][k] >= 1 && sudoku[j][k] <= 9) {
+                            for (int a = 0; a < checked.length; a++) {
+                                if (sudoku[j][k] == checked[a]) {
+                                    return false;
+                                }
+                            }
+                            for (int b = 0; b < checked.length; b++) {
+                                if (checked[b] == 0) {
+                                    checked[b] = sudoku[j][k];
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                checked = new int[9];
+                for (int j = 6; j < 9; j++) {
+                    for (int k = (3*(i-6)); k < (3*(i-6))+3; k++) {
+                        if (sudoku[j][k] >= 1 && sudoku[j][k] <= 9) {
+                            for (int a = 0; a < checked.length; a++) {
+                                if (sudoku[j][k] == checked[a]) {
+                                    return false;
+                                }
+                            }
+                            for (int b = 0; b < checked.length; b++) {
+                                if (checked[b] == 0) {
+                                    checked[b] = sudoku[j][k];
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return true;
-    }    
+    }
 }
+        
