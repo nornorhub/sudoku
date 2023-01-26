@@ -1,0 +1,86 @@
+package sudoku1;
+
+import java.util.*;
+import java.io.*;
+public class SudokuSolverSkeleton
+{
+    
+    static int[][] solved = new int[9][9];
+    
+    public static void main(String[] args) throws Exception
+    {
+        int[][] sud;
+        sud = getPuzzle("puzzle1Unsolved.txt");
+        System.out.println(printSudoku(solve(sud)));
+        sud = getPuzzle("puzzle2Unsolved.txt");
+        System.out.println(printSudoku(solve(sud)));
+        sud = getPuzzle("puzzle3Unsolved.txt");
+        System.out.println(printSudoku(solve(sud)));
+        sud = getPuzzle("puzzle4Unsolved.txt");
+        System.out.println(printSudoku(solve(sud)));
+    }
+    
+    public static int[][] getPuzzle(String puzzle) throws IOException
+    {
+        int[][] arr = new int[9][9];
+        Scanner fileScan = new Scanner (new FileReader(puzzle));
+        for (int x = 0; x < 9; x++)
+        {
+            String line = fileScan.nextLine();
+            Scanner lineScan = new Scanner (line);
+            lineScan.useDelimiter("\t");
+            for (int y = 0; y < 9; y++)
+            {
+                String z = lineScan.next();
+                arr[x][y] = Integer.parseInt(z);
+            }
+        }
+        return arr;
+    }
+    
+    public static int[][] solve(int[][] sudoku)
+    {
+        recur(sudoku, 0, 0);
+        return solved;
+    }
+    
+    public static boolean recur(int[][] sudoku, int ri, int ci) {
+        if (ri == 8 && ci == 9) {
+            if (SudokuChecker.check(sudoku)) {
+                solved = sudoku;
+                return true;
+            } else {
+                return false;
+            }
+        } else if (ci == 9) {
+            ri++;
+            ci = 0;
+        }
+        if (sudoku[ri][ci] == 0) {
+            for (int i = 1; i <= 9; i++) {
+                sudoku[ri][ci] = i;
+                if (recur(sudoku, ri, ci+1)) {
+                    return true;
+                }
+            }
+        } else {
+            recur(sudoku, ri, ci+1);
+        }
+        return false; //??
+    }
+    
+    public static String printSudoku(int[][] s)
+    {
+        String printed = "";
+        for (int x = 0; x < s.length; x++)
+        {
+            for (int y = 0; y < s[x].length; y++)
+            {
+                printed += s[x][y] + "\t";
+            }
+            printed += "\n";
+        }
+        printed += "\n\n";
+        return printed;
+    }
+}
